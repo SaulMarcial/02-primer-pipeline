@@ -5,7 +5,7 @@ pipeline {
         stage('docker build') {
             steps {
                 script {
-                    sh "docker build -f 02-primer-pipeline/Dockerfile -t saulmls/pipeline:3.0.0-${BUILD_ID} 02-primer-pipeline"
+                    sh "docker build -f 02-primer-pipeline/Dockerfile -t saulmls/pipeline:3.0.-${BUILD_ID} 02-primer-pipeline"
                 }
             }
         }
@@ -14,7 +14,7 @@ pipeline {
            steps {
                withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                   sh 'docker push saulmls/pipeline:3.0.0'
+                   sh 'docker push saulmls/pipeline:3.0.-${BUILD_ID}'
                 }
             }
         }
