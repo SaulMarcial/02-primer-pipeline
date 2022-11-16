@@ -9,12 +9,22 @@ pipeline {
                 }
             }
         }
+        
         stage('docker push') {
-            steps {
-                script {
-                    sh "docker push saulmls/pipeline:2.0.0-${BUILD_ID}"
+           steps {
+               withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+                   sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+                   sh 'docker push saulmls/pipeline:3.0.0'
                 }
             }
         }
+        
+        //stage('docker push') {
+          //  steps {
+            //    script {
+                   // sh "docker push saulmls/pipeline:2.0.0-${BUILD_ID}"
+              //  }
+            //}
+        //}
     }
 }
